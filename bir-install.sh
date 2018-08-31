@@ -8,6 +8,7 @@ COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.0.0/birak
 COIN_NAME='BirakeCoin'
 COIN_BIN_NAME='BirakeCoin'
 COIN_PORT=39697
+RPC_PORT=39698
 if [[ "$1" != "" ]]
 then
 CONFIGFOLDER="$1"
@@ -24,6 +25,12 @@ if [[ "$3" != "" ]]
 then
 NODEIP="$3"
 fi
+
+if [[ "$4" != "" ]]
+then
+RPC_PORT="$4"
+fi
+
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -169,8 +176,8 @@ listen=1
 server=1
 daemon=1
 port=$COIN_PORT
-rpcbind=$NODEIP
-bind=$NODEIP
+rpcport=$RPC_PORT
+
 EOF
 }
 
