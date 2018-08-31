@@ -170,6 +170,8 @@ listen=1
 server=1
 daemon=1
 port=$COIN_PORT
+rpcbind=$NODEIP
+bind=$NODEIP
 EOF
 }
 
@@ -200,8 +202,6 @@ function update_config() {
   cat << EOF >> $CONFIGFOLDER/$CONFIG_FILE
 logintimestamps=1
 maxconnections=64
-bind=$NODEIP
-rpcbind=$NODEIP
 masternode=1
 externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
