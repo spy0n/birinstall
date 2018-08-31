@@ -150,10 +150,10 @@ esac
 EOF
 chmod +x /etc/init.d/$COIN_NAME >/dev/null 2>&1
 update-rc.d $COIN_NAME defaults >/dev/null 2>&1
-/etc/init.d/$COIN_NAME -datadir=$CONFIGFOLDER start >/dev/null 2>&1
+/etc/init.d/$COIN_NAME start >/dev/null 2>&1
 if [ "$?" -gt "0" ]; then
  sleep 5
- /etc/init.d/$COIN_NAME -datadir=$CONFIGFOLDER start >/dev/null 2>&1
+ /etc/init.d/$COIN_NAME start >/dev/null 2>&1
 fi
 }
 
@@ -307,7 +307,9 @@ function important_information() {
 function setup_node() {
   create_config
   create_key
+  ec
   update_config
+
   enable_firewall
   important_information
   if (( $UBUNTU_VERSION == 16 )); then
