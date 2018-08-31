@@ -6,6 +6,7 @@ COIN_DAEMON='/usr/local/bin/birakecoind'
 COIN_CLI='/usr/local/bin/birakecoin-cli'
 COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.0.0/birakecoin-1.0.0-x86_64-linux-gnu.tar.gz'
 COIN_NAME='BirakeCoin'
+COIN_BIN_NAME='BirakeCoin'
 COIN_PORT=39697
 if [[ "$1" != "" ]]
 then
@@ -56,10 +57,11 @@ function compile_node() {
   cd $TMP_FOLDER
   wget --progress=bar:force $COIN_REPO 2>&1 | progressfilt
   compile_error
+
   COIN_ZIP=$(echo $COIN_REPO | awk -F'/' '{print $NF}')
   COIN_VER=$(echo $COIN_ZIP | awk -F'/' '{print $NF}' | sed -n 's/.*\([0-9]\.[0-9]\.[0-9]\).*/\1/p')
   COIN_DIR=$(echo ${COIN_NAME,,}-$COIN_VER)
-  tar xvzf $COIN_ZIP --strip=2 ${COIN_DIR}/bin/${COIN_NAME,,}d ${COIN_DIR}/bin/${COIN_NAME,,}-cli>/dev/null 2>&1
+  tar xvzf $COIN_ZIP --strip=2 ${COIN_DIR}/bin/${COIN_BIN_NAME,,}d ${COIN_DIR}/bin/${COIN_BIN_NAME,,}-cli>/dev/null 2>&1
   compile_error
   rm -f $COIN_ZIP >/dev/null 2>&1
   cp birakecoin* /usr/local/bin
