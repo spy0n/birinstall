@@ -177,20 +177,20 @@ function create_key() {
   echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}.\nLeave it blank to generate a new ${RED}$COIN_NAME Masternode Private Key${NC} for you:"
   read -e COINKEY
   if [[ -z "$COINKEY" ]]; then
-  $COIN_DAEMON -daemon
+  $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
   sleep 30
   if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
    echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
    exit 1
   fi
-  COINKEY=$($COIN_CLI masternode genkey)
+  COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER masternode genkey)
   if [ "$?" -gt "0" ];
     then
     echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
     sleep 30
-    COINKEY=$($COIN_CLI masternode genkey)
+    COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER masternode genkey)
   fi
-  $COIN_CLI stop
+  $COIN_CLI -datadir=$CONFIGFOLDER stop
 fi
 clear
 }
