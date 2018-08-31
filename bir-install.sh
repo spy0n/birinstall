@@ -7,8 +7,22 @@ COIN_CLI='/usr/local/bin/birakecoin-cli'
 COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.0.0/birakecoin-1.0.0-x86_64-linux-gnu.tar.gz'
 COIN_NAME='BirakeCoin'
 COIN_PORT=39697
+if [[ "$1" != "" ]]
+then
+CONFIGFOLDER="$1"
+fi
+
+if [[ "$2" != "" ]]
+then
+COIN_NAME="$2"
+fi
 
 NODEIP=$(curl -s4 icanhazip.com)
+
+if [[ "$3" != "" ]]
+then
+NODEIP="$3"
+fi
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -113,29 +127,29 @@ function configure_startup() {
 
 case "\$1" in
  start)
-   $COIN_DAEMON -daemon
+   $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
    sleep 5
    ;;
  stop)
-   $COIN_CLI stop
+   $COIN_CLI -datadir=$CONFIGFOLDER stop
    ;;
  restart)
-   $COIN_CLI stop
+   $COIN_CLI -datadir=$CONFIGFOLDER stop
    sleep 10
-   $COIN_DAEMON -daemon
+   $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
    ;;
  *)
-   echo "Usage: $COIN_NAME {start|stop|restart}" >&2
+   echo "Usage: $COIN_NAME -datadir=$CONFIGFOLDER {start|stop|restart}" >&2
    exit 3
    ;;
 esac
 EOF
 chmod +x /etc/init.d/$COIN_NAME >/dev/null 2>&1
 update-rc.d $COIN_NAME defaults >/dev/null 2>&1
-/etc/init.d/$COIN_NAME start >/dev/null 2>&1
+/etc/init.d/$COIN_NAME -datadir=$CONFIGFOLDER start >/dev/null 2>&1
 if [ "$?" -gt "0" ]; then
  sleep 5
- /etc/init.d/$COIN_NAME start >/dev/null 2>&1
+ /etc/init.d/$COIN_NAME -datadir=$CONFIGFOLDER start >/dev/null 2>&1
 fi
 }
 
@@ -182,7 +196,8 @@ function update_config() {
   cat << EOF >> $CONFIGFOLDER/$CONFIG_FILE
 logintimestamps=1
 maxconnections=64
-#bind=$NODEIP
+bind=$NODEIP
+rpcbind=$NODEIP
 masternode=1
 externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
@@ -284,6 +299,10 @@ function important_information() {
 
 function setup_node() {
   get_ip
+if [[ "$3" != "" ]]
+then
+NODEIP="$3"
+fi	
   create_config
   create_key
   update_config
