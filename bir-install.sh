@@ -307,9 +307,7 @@ function important_information() {
 function setup_node() {
   create_config
   create_key
-  ec
   update_config
-
   enable_firewall
   important_information
   if (( $UBUNTU_VERSION == 16 )); then
