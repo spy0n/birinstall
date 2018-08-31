@@ -261,7 +261,7 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-if [ -n "$(pidof $COIN_DAEMON)" ] || [ -e "$COIN_DAEMOM" ] ; then
+if [ -n "$(ps ax|grep '$COIN_DAEMON -datadir=$CONFIGFOLDER'|grep -v grep)" ] ; then
   echo -e "${RED}$COIN_NAME is already installed.${NC}"
   exit 1
 fi
