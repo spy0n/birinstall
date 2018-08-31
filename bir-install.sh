@@ -165,13 +165,12 @@ function create_config() {
   cat << EOF > $CONFIGFOLDER/$CONFIG_FILE
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
-rpcallowip=127.0.0.1
 listen=1
 server=1
 daemon=1
 port=$COIN_PORT
-rpcbind=$NODEIP
-bind=$NODEIP
+#rpcbind=$NODEIP
+#bind=$NODEIP
 EOF
 }
 
