@@ -177,7 +177,7 @@ server=1
 daemon=1
 port=$COIN_PORT
 rpcport=$RPC_PORT
-
+bind=$NODEIP
 EOF
 }
 
