@@ -306,11 +306,6 @@ function important_information() {
 }
 
 function setup_node() {
-  get_ip
-if [[ "$3" != "" ]]
-then
-NODEIP="$3"
-fi	
   create_config
   create_key
   update_config
@@ -330,4 +325,9 @@ clear
 checks
 prepare_system
 compile_node
+get_ip
+if [[ "$3" != "" ]]
+then
+NODEIP="$3"
+fi
 setup_node
