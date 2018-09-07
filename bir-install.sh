@@ -9,6 +9,7 @@ COIN_NAME='BirakeCoin'
 COIN_BIN_NAME='BirakeCoin'
 COIN_PORT=39697
 RPC_PORT=39698
+BIND=""
 if [[ "$1" != "" ]]
 then
 CONFIGFOLDER="$1"
@@ -24,6 +25,7 @@ NODEIP=$(curl -s4 icanhazip.com)
 if [[ "$3" != "" ]]
 then
 NODEIP="$3"
+BIND="bind=$3"
 fi
 
 if [[ "$4" != "" ]]
@@ -173,11 +175,12 @@ function create_config() {
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
 listen=1
+prune=500
 server=1
 daemon=1
 port=$COIN_PORT
 rpcport=$RPC_PORT
-bind=$NODEIP
+$BIND
 EOF
 }
 
