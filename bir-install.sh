@@ -81,6 +81,7 @@ function compile_node() {
   cd -
   rm -rf $TMP_FOLDER >/dev/null 2>&1
   clear
+  fi
 }
 
 function configure_systemd() {
