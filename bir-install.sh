@@ -5,6 +5,7 @@ CONFIGFOLDER='/root/.birakecoin'
 COIN_DAEMON='/usr/local/bin/birakecoind'
 COIN_CLI='/usr/local/bin/birakecoin-cli'
 COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.0.0/birakecoin-1.0.0-x86_64-linux-gnu.tar.gz'
+COIN_SNAPSHOT='https://s3.eu-central-1.amazonaws.com/birake-snapshot/snapshot.zip'
 COIN_NAME='BirakeCoin'
 COIN_BIN_NAME='BirakeCoin'
 COIN_PORT=39697
@@ -80,7 +81,6 @@ function compile_node() {
   cd -
   rm -rf $TMP_FOLDER >/dev/null 2>&1
   clear
-  fi
 }
 
 function configure_systemd() {
@@ -182,6 +182,16 @@ port=$COIN_PORT
 rpcport=$RPC_PORT
 $BIND
 EOF
+}
+
+function download_snapshot() {
+  echo -e "Prepare to download snapshot"
+  TMP_FOLDER=$(mktemp -d)
+  cd $TMP_FOLDER
+  wget --progress=bar:force $COIN_SNAPSHOT 2>&1 | progressfilt
+  unzip snapshot.zip -d $CONFIGFOLDER/
+  cd -
+  rm -rf $TMP_FOLDER >/dev/null 2>&1
 }
 
 function create_key() {
@@ -287,7 +297,7 @@ fi
 function prepare_system() {
 echo -e "Prepare the system to install ${GREEN}$COIN_NAME${NC} master node."
 apt-get update >/dev/null 2>&1
-apt-get install -y wget curl binutils >/dev/null 2>&1
+apt-get install -y wget curl binutils zip >/dev/null 2>&1
 }
 
 function important_information() {
@@ -316,6 +326,7 @@ function important_information() {
 
 function setup_node() {
   create_config
+  download_snapshot
   create_key
   update_config
   enable_firewall
