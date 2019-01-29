@@ -76,6 +76,8 @@ function compile_node() {
   echo -e "Remove the old $COIN_NAME wallet from the system"
   rm -f /usr/local/bin/birakecoin* >/dev/null 2>&1
   rm $CONFIGFOLDER/banlist.dat >/dev/null 2>&1
+  rm -rf $CONFIGFOLDER/blocks >/dev/null 2>&1
+  rm -rf $CONFIGFOLDER/chainstate >/dev/null 2>&1
   rm $CONFIGFOLDER/mnpayments.dat >/dev/null 2>&1
   rm $CONFIGFOLDER/fee_estimates.dat >/dev/null 2>&1
   rm $CONFIGFOLDER/peers.dat >/dev/null 2>&1
@@ -87,7 +89,7 @@ function compile_node() {
   rm $CONFIGFOLDER/bootstrap.dat.old >/dev/null 2>&1
   sleep 5
   clear
-
+  download_snapshot
   if [ ! -f "/usr/local/bin/birakecoind" ]; then
   echo -e "Prepare to download $COIN_NAME"
   TMP_FOLDER=$(mktemp -d)
