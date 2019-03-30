@@ -4,7 +4,7 @@ CONFIG_FILE='birakecoin.conf'
 CONFIGFOLDER='/root/.birakecoin'
 COIN_DAEMON='/usr/local/bin/birakecoind'
 COIN_CLI='/usr/local/bin/birakecoin-cli'
-COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.0.1/birakecoin-1.0.1-x86_64-linux-gnu.tar.gz'
+COIN_REPO='https://github.com/birake/birakecoin/releases/download/v1.0.2.0/birakecoin-1.0.2-x86_64-linux-gnu.tar.gz'
 COIN_SNAPSHOT='https://snapshot.birake.com/snapshot.zip'
 COIN_NAME='BirakeCoin'
 COIN_BIN_NAME='BirakeCoin'
@@ -75,21 +75,22 @@ function compile_node() {
 
   echo -e "Remove the old $COIN_NAME wallet from the system"
   rm -f /usr/local/bin/birakecoin* >/dev/null 2>&1
-  rm $CONFIGFOLDER/banlist.dat >/dev/null 2>&1
-  rm -rf $CONFIGFOLDER/blocks >/dev/null 2>&1
-  rm -rf $CONFIGFOLDER/chainstate >/dev/null 2>&1
-  rm $CONFIGFOLDER/mnpayments.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/fee_estimates.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/peers.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/budget.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/mncache.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/debug.log >/dev/null 2>&1
-  rm $CONFIGFOLDER/db.log >/dev/null 2>&1
-  rm $CONFIGFOLDER/bootstrap.dat >/dev/null 2>&1
-  rm $CONFIGFOLDER/bootstrap.dat.old >/dev/null 2>&1
+
+  #rm $CONFIGFOLDER/banlist.dat >/dev/null 2>&1
+  #rm -rf $CONFIGFOLDER/blocks >/dev/null 2>&1
+  #rm -rf $CONFIGFOLDER/chainstate >/dev/null 2>&1
+  #rm $CONFIGFOLDER/mnpayments.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/fee_estimates.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/peers.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/budget.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/mncache.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/debug.log >/dev/null 2>&1
+  #rm $CONFIGFOLDER/db.log >/dev/null 2>&1
+  #rm $CONFIGFOLDER/bootstrap.dat >/dev/null 2>&1
+  #rm $CONFIGFOLDER/bootstrap.dat.old >/dev/null 2>&1
   sleep 5
   clear
-  download_snapshot
+  #download_snapshot
   if [ ! -f "/usr/local/bin/birakecoind" ]; then
   echo -e "Prepare to download $COIN_NAME"
   TMP_FOLDER=$(mktemp -d)
