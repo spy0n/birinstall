@@ -175,47 +175,52 @@ function create_config() {
   cat << EOF > $CONFIGFOLDER/$CONFIG_FILE
 rpcuser=$RPCUSER
 rpcpassword=$RPCPASSWORD
-listen=1
+listen=0
 prune=500
 server=1
 daemon=1
 port=$COIN_PORT
 rpcport=$RPC_PORT
-$BIND
 EOF
 }
 
 function download_snapshot() {
+  if [ ! -d "$CONFIGFOLDER/../snapshot" ]; then
   echo -e "Prepare to download snapshot"
   TMP_FOLDER=$(mktemp -d)
   cd $TMP_FOLDER
   wget --progress=bar:force $COIN_SNAPSHOT 2>&1 | progressfilt
-  unzip snapshot.zip -d $CONFIGFOLDER/
-  mv $CONFIGFOLDER/snapshot/* $CONFIGFOLDER/
-  rm -rf $CONFIGFOLDER/snapshot
+  unzip snapshot.zip -d $CONFIGFOLDER/../
   cd -
   rm -rf $TMP_FOLDER >/dev/null 2>&1
+  fi
+  cp -rp $CONFIGFOLDER/../snapshot/* $CONFIGFOLDER/
 }
 
 function create_key() {
   echo -e "Enter your ${RED}$COIN_NAME Masternode Private Key${NC}.\nLeave it blank to generate a new ${RED}$COIN_NAME Masternode Private Key${NC} for you:"
   read -e COINKEY
   if [[ -z "$COINKEY" ]]; then
-  $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
-  sleep 120
-  if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
-   echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
-   exit 1
+
+      if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
+       $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
+       sleep 120
+
+      fi
+      if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
+       echo -e "${RED}$COIN_NAME server couldn not start. Check /var/log/syslog for errors.{$NC}"
+       exit 1
+      fi
+
+      COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
+      if [ "$?" -gt "0" ];
+        then
+        echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
+        sleep 120
+        COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
+      fi
+    #  $COIN_CLI -datadir=$CONFIGFOLDER stop
   fi
-  COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER masternode genkey)
-  if [ "$?" -gt "0" ];
-    then
-    echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
-    sleep 180
-    COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER masternode genkey)
-  fi
-  $COIN_CLI -datadir=$CONFIGFOLDER stop
-fi
 clear
 }
 
