@@ -229,6 +229,8 @@ function create_key() {
   read -e COINKEY
   if [[ -z "$COINKEY" ]]; then
 
+      $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
+      sleep 10
       if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
        $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
        sleep 120
@@ -251,7 +253,7 @@ function create_key() {
             COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
         fi
       fi
-    #  $COIN_CLI -datadir=$CONFIGFOLDER stop
+      $COIN_CLI -datadir=$CONFIGFOLDER stop
   fi
 clear
 }
