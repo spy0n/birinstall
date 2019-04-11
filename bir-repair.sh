@@ -230,7 +230,7 @@ function create_key() {
   if [[ -z "$COINKEY" ]]; then
 
       $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
-      sleep 10
+      sleep 1
       if [ -z "$(ps axo cmd:100 | grep $COIN_DAEMON)" ]; then
        $COIN_DAEMON -datadir=$CONFIGFOLDER -daemon
        sleep 120
@@ -241,7 +241,9 @@ function create_key() {
        exit 1
       fi
 
+      echo -e "\n\n${RED}Waiting for loading blocks..... Please wait, it takes about 2 minutes!{$NC}"
       COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
+
       if [ "$?" -gt "0" ];
         then
         sleep 120
