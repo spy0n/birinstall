@@ -215,9 +215,14 @@ function create_key() {
       COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
       if [ "$?" -gt "0" ];
         then
-        echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
         sleep 120
         COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
+        if [ "$?" -gt "0" ];
+        then
+            echo -e "${RED}Wallet not fully loaded. Let us wait and try again to generate the Private Key${NC}"
+            sleep 120
+            COINKEY=$($COIN_CLI -datadir=$CONFIGFOLDER/../.birakecoin masternode genkey)
+        fi
       fi
     #  $COIN_CLI -datadir=$CONFIGFOLDER stop
   fi
