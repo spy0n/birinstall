@@ -1,21 +1,29 @@
 # BirakeCoin
-Shell script to install a [BirakeCoin Masternode](https://www.birake.com/) on a Linux server running Ubuntu 14.04 or 16.04. Use it on your own risk.
+Shell script to install or update a [BirakeCoin Masternode](https://www.birake.com/) on a Linux server running Ubuntu 14.04, 16.04, 18.04 and 19.04. Use it on your own risk.
 
 ***
 ## Installation:
 ```
-git clone https://github.com/birake/birinstall.git
-cd birinstall
-bash bir-install.sh
+apt-get install -y shc curl;curl https://raw.githubusercontent.com/birake/birinstall/master/bir-setup.sh.x --output bir-setup;chmod +x bir-setup
+./bir-setup
 ```
 ***
+
+***
+## Update:
+```
+apt-get install -y shc curl;curl https://raw.githubusercontent.com/birake/birinstall/master/bir-setup.sh.x --output bir-setup;chmod +x bir-setup
+./bir-setup update
+```
+***
+
 
 ## Desktop wallet setup
 
 After the MN is up and running, you need to configure the desktop wallet accordingly. Here are the steps for Windows Wallet
 1. Open the BirakeCoin Coin Desktop Wallet.
 2. Go to RECEIVE and create a New Address: **MN1**
-3. Send **40000** **BirakeCoin** to **MN1**.
+3. Send **50000** **BirakeCoin** to **MN1**.
 4. Wait for 15 confirmations.
 5. Go to **Tools -> "Debug console - Console"**
 6. Type the following command: **masternode outputs**
@@ -38,25 +46,21 @@ startmasternode "alias" "0" "MN1"
 ```
 ***
 
-## Usage:
-```
-birakecoin-cli getinfo
-birakecoin-cli mnsync status
-birakecoin-cli masternode status
-```
-Also, if you want to check/start/stop **BirakeCoin** , run one of the following commands as **root**:
+## Available commands:
 
-**Ubuntu 16.04**:
+* `./bir-setup` displays the status of installed nodes. If none is installed it will install the first one
+* `./bir-setup 3` it will install multiple nodes and 3 in this case is how many nodes to install
+* `./bir-setup reinstall 1` where 1 is the number of the node that you want to reinstall
+* `./bir-setup reinstall all` it will reinstall all the mn wallets
+* `./bir-setup restart 2` where 2 is the number of node that you want to restart
+* `./bir-setup stop 2` where 2 is the number of node that you want to stop
+* `./bir-setup delete 2` where 2 is the number of node that you want to delete
+* `./bir-setup delete all` it will delete all the mn wallets
+* `./bir-setup update` will update the wallet to latest version
+
+If you want to check **BirakeCoin** mn status, run :
+
 ```
-systemctl status BirakeCoin #To check the service is running.
-systemctl start BirakeCoin #To start BirakeCoin service.
-systemctl stop BirakeCoin #To stop BirakeCoin service.
-systemctl is-enabled BirakeCoin #To check whetether BirakeCoin service is enabled on boot or not.
+./bir-setup
 ```
-**Ubuntu 14.04**:  
-```
-/etc/init.d/BirakeCoin start #To start BirakeCoin service
-/etc/init.d/BirakeCoin stop #To stop BirakeCoin service
-/etc/init.d/BirakeCoin restart #To restart BirakeCoin service
-```
-***
+
